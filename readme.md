@@ -15,4 +15,9 @@ Through the process of farmers and restaurants signing up for the service and pu
 * Allow farmers to receive and manage buy requests through the site 
 
 
+# Resources
+
+[Measuring distance between two Lat/Long's using mysql](https://tighten.co/blog/a-mysql-distance-function-you-should-know-about)
+
+
 

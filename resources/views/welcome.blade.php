@@ -1,95 +1,43 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
-</html>
+            @section('content')
+            <div class="text-center">
+                    <h1 >Welcome to farm to table!</h1>
+                    <p>You're one step closer to playing your part in spreading the popularity of local food</p>
+                    <div class="d-flex">
+                         <div class="card flex-equal-width">
+                             <h3 class="card-header">
+                                 Sign up as a consumer
+                             </h3>
+                             <p class="card-body">Want to explore restaurants, farms, and grocery stores nearby that sell local, fresh food? 
+                             You've come to the right place. Check out all kinds of local food sources near you!
+                             </p>
+                             <a class="btn btn-primary" href="{{ route('register') }}" >Get Started</a>
+                         </div>
+                         <div class="card flex-equal-width">
+                             <h3 class="card-header">
+                                 Sign up as a Producer
+                             </h3>
+      
+                             <p class="card-body">Want to gain immediate access to customers in your area? 
+                             There are countless restaurants, grocery stores, and people that 
+                             want to reward you for the fruits of your labor.
+                             </p>
+                             <a class="btn btn-primary" href="{{ route('register') }}" >Get Started</a>
+                         </div>
+                         <div class="card flex-equal-width">
+                                <h3 class="card-header">
+                                    Sign up as a Business
+                                </h3>
+                                <p class="card-body">Are you a business owner that wants more exposure and access to local food from responsible, sustainable farms? 
+                                    Browse all the wonderful ingredients the farmers have to offer! 
+                                </p>
+                                <a class="btn btn-primary" href="{{ route('register') }}" >Get Started</a>
+                            </div>
+                     </div>
+                 </div>
+                
+            @endsection
+      
+            
+            

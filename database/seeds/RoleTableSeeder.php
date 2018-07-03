@@ -13,7 +13,6 @@ class RoleTableSeeder extends Seeder
     public function run()
     {
 
-        App\Role::delete();
 
 
         $farmer_role = new App\Role();

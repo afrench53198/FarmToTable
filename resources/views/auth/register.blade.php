@@ -8,7 +8,6 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    Consumer!
                     <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
                         @csrf
 
@@ -21,6 +20,23 @@
                                 @if ($errors->has('name'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="role_id" type="select" class="form-control{{ $errors->has('Role') ? ' is-invalid' : '' }}" name="role_id" value="{{ old('Role') }}" required autofocus>
+                                    <option value="1">Producer</option>
+                                    <option value="2">Business</option>
+                                    <option value="3">Consumer</option>
+                                </select>
+
+                                @if ($errors->has('Role'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('Role') }}</strong>
                                     </span>
                                 @endif
                             </div>

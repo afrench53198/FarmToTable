@@ -1,5 +1,5 @@
 
-@section('content')
+
 
     <h2 class="text-center">Please enter more details about your Business</h2>
     <form action="{{route('businesses')}}" method="post">
@@ -26,15 +26,15 @@
         <hr>
         <div class="form-group">
             <label for="street">Street Address</label>
-            <input type="text" class="form-control" name='street' placeholder="1404 e. Local Food Ave" required>
+            <input type="text" class="form-control" name='street'  id="street" placeholder="1404 e. Local Food Ave" required>
         </div>
         <div class="form-group">
             <label for="city">City</label>
-            <input type="text" class="form-control" name='city' required>
+            <input type="text" class="form-control" name='city'  id="city" required>
         </div>
         <div class="form-group">
             <label for="state">State</label>
-            <select name="state" class="form-control">
+            <select name="state"  id="state" class="form-control">
                 <option value="AL">Alabama</option>
                 <option value="AK">Alaska</option>
                 <option value="AZ">Arizona</option>
@@ -90,9 +90,8 @@
         </div>
         <div class="form-group">
             <label for="city">Zip Code</label>
-            <input type="number" class="form-control" name='zip' placeholder="40929" required>
+            <input type="number" class="form-control" name='zip'  id="zip" placeholder="40929" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
     </form>
 
-@endsection

@@ -25,6 +25,12 @@ Route::post('/businesses', 'BusinessesController@store')->name('businesses');
 
 Route::get('/businesses', 'BusinessesController@index');
 
-Route::put('/businesses/{business}', 'BusinessesController@index');
+Route::put('/businesses/{business}', 'BusinessesController@update');
 
-Route::get('/profile/{user}','ProfileController@index');
+Route::get('/profile/create','ProfileController@create');
+
+Route::put('/profile/create/{user}','ProfileController@address');
+
+Route::get('/profile','ProfileController@index');
+
+Route::put('/profile/{user}','ProfileController@update');

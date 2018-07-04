@@ -17,12 +17,15 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('role_id');
-            $table->unsignedInteger('business_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            // $table->float('latitude', 10, 6);
-            // $table->float('longitude', 10, 6);
+            $table->string('street')->nullable();
+            $table->string('city', 50)->nullable();
+            $table->string('state', 2)->nullable();
+            $table->string('zip', 12)->nullable();
+            $table->float('latitude', 10, 6)->nullable();
+            $table->float('longitude', 10, 6)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

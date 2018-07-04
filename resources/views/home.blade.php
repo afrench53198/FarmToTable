@@ -6,11 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Dashboard</div>
-                @if ($role->name === 'Consumer')
-                    @include('profile.create.consumer') 
-                @else
-                    @include('profile.create.business')
-                @endif
+             App home!
 
             </div>
         </div>

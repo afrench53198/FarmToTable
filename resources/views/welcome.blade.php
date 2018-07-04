@@ -29,7 +29,7 @@
                                 <h3 class="card-header">
                                     Sign up as a Business
                                 </h3>
-                                <p class="card-body">Are you a business owner that wants more exposure and access to local food from responsible, sustainable farms? 
+                                <p class="card-body">Are you an organization that wants more exposure and access to local food from responsible, sustainable farms? 
                                     Browse all the wonderful ingredients the farmers have to offer! 
                                 </p>
                                 <a class="btn btn-primary" href="{{ route('register') }}" >Get Started</a>

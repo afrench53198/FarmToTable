@@ -38,7 +38,7 @@ class BusinessesController extends Controller
     {
         $user = auth()->user();
         
-        Business::create([
+        $business = Business::create([
             'user_id'=>$user->id,
             'name'=>$request->name,
             'description'=>$request->description,
@@ -49,8 +49,9 @@ class BusinessesController extends Controller
             'state'=>$request->state,
             'zip'=>$request->zip,
         ]);
+    
 
-        return redirect('/profile/{$user}');
+        return redirect('/profile');
     }
 
     /**

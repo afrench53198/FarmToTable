@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateBusinessRequest;
 use App\Business;
+use App\Utilites\GoogleMaps;
 
 class BusinessesController extends Controller
 {
@@ -38,6 +39,9 @@ class BusinessesController extends Controller
     {
         $user = auth()->user();
         
+        $coordinates = GoogleMaps::geocodeAddress($request->street,$request->city,$request->state,$request->zip);
+
+
         $business = Business::create([
             'user_id'=>$user->id,
             'name'=>$request->name,
@@ -48,8 +52,11 @@ class BusinessesController extends Controller
             'city'=>$request->city,
             'state'=>$request->state,
             'zip'=>$request->zip,
+            'latitude'=>$coordinates['lat'],
+            'longitude'=>$coordinates['lng']
         ]);
     
+
 
         return redirect('/profile');
     }

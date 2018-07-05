@@ -8,9 +8,7 @@
                     @include('profile.create.business',['user'=>$user])
                 @endif
 </div>
-<script type="application/javascript" src="{{asset('js/geocoding.js')}}">
 
-</script>
 @endsection
 
 

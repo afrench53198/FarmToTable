@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Utilites;
+namespace App\Utilities;
 
 use function GuzzleHttp\json_decode;
-
+use GuzzleHttp\Client;
 
 class GoogleMaps 
 {
-    function geocodeAddress($address, $city, $state, $zip) {
+   public static function geocodeAddress($address, $city, $state, $zip) {
         
         $url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode( $address.' '.$city.', '.$state.' '.$zip ).'&key='.env( 'GOOGLE_MAPS_API_KEY' );
         
-        $client = new Guzzle\Http\Client();
+        $client = new Client();
 
         // send get request and decode data
         $geocodeResponse = $client->get( $url )->getBody();

@@ -12,7 +12,7 @@
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input type="textarea" class="form-control" name='description' placeholder="Enter your services, what you sell, and why your business is awesome" required>
+            <textarea class="form-control" name='description' placeholder="Enter your services, what you sell, and why your business is awesome" required></textarea>
         </div>
         <div class="form-group">
             <label for="phone">Phone Number</label>

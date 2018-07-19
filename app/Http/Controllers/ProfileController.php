@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AddressRequest;
 use App\Role;
 use App\User;
+use App\Utilities\GoogleMaps;
 
 class ProfileController extends Controller
 {
@@ -35,10 +36,16 @@ class ProfileController extends Controller
 
     public function address(User $user, AddressRequest $request) 
     {
+
+
+        $coordinates = GoogleMaps::geocodeAddress($request->street,$request->city,$request->state,$request->zip);
+
         $user->street = $request->street;
         $user->city = $request->city;
         $user->state = $request->state;
         $user->zip = $request->zip;
+        $user->latitude = $coordinates['lat'];
+        $user->longitude = $coordinates['lng'];
         $user->save();
 
         return redirect('/profile');

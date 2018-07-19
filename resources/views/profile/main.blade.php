@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Welcome to your profile, {{$user->name}}!</h1>
-    
+<div id="profile">
+    <h1>Welcome to your profile, {{$user->name}}!</h1>
+    <h2>Message: @{{ message }}</h2>
     @if (! empty($business))
     <div class="card">
         <h4 class="card-header">Business Information</h4>
@@ -37,5 +38,6 @@
             <p><strong>Zip: </strong>{{$user->zip}}</p>
         </div>
     </div>
+</div>
     @endif
 @endsection

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
             @section('content')
+
             <div class="text-center">
                     <h1 >Welcome to farm to table!</h1>
                     <p>You're one step closer to playing your part in spreading the popularity of local food</p>

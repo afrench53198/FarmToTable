@@ -23,10 +23,10 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $role = Role::find($user->role_id);
-        $business = User::find($user->id)->business;
+        $jsonUser = json_encode(auth()->user());
+        $business = json_encode(User::find($user->id)->business);
 
-        return view('profile.main',compact('role','user','business'));
+        return view('profile.main',compact('jsonUser','business'));
     }
 
     public function store(User $user) 

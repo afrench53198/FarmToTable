@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateBusinessRequest;
+use App\Http\Requests\BusinessUpdateRequest;
 use App\Business;
 use App\Utilities\GoogleMaps;
+use Illuminate\Auth\Access\Response;
 
 
 class BusinessesController extends Controller
@@ -92,9 +94,36 @@ class BusinessesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BusinessUpdateRequest $request, $id)
     {
-        //
+        // Todo: Get validation working properly so the view can display error messages
+        Validator::make($request->all(), [
+            'name'=> 'required|string|max:255',
+            'description'=> 'required|string',
+            'phone' => 'required|phone|numeric',
+            'email' => 'email',
+            'street'=> 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string|max:2',
+            'zip' => 'required|max:5|string', 
+        ])->validate();
+        $business = Business::find($id);
+
+        foreach ($request->updates as $key => $updatedValue) {
+            $business[$key] = $updatedValue;
+        }
+       
+        $coordinates = GoogleMaps::geocodeAddress($business->street,$business->city,$business->state,$business->zip);
+            if ($coordinates['lat']) {
+                $business['latitude'] = $coordinates['lat'];
+                $business['longitude'] = $coordinates['lng'];
+                $business->save();
+                return response()->json($business,200);
+            } else {                    
+                return response()->json('invalid_address',406);
+            }
+            $business->save();
+            return response()->json($business,200);
     }
 
     /**

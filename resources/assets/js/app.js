@@ -15,11 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('profile-component', require('./components/ProfileComponent.vue'));
 
 const app = new Vue({
     el: '#profile',
-    data: {
-        message: 'In profile main!'
-    }
 });

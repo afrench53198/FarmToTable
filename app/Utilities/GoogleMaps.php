@@ -28,10 +28,12 @@ class GoogleMaps
          && $geocodeData->status != 'ZERO_RESULTS' 
          && isset( $geocodeData->results ) 
          && isset( $geocodeData->results[0] ) ){
-    $coordinates['lat'] = $geocodeData->results[0]->geometry->location->lat;
-    $coordinates['lng'] = $geocodeData->results[0]->geometry->location->lng;
-  }
+            $coordinates['lat'] = $geocodeData->results[0]->geometry->location->lat;
+            $coordinates['lng'] = $geocodeData->results[0]->geometry->location->lng;
+        } else {
+            return $geocodeResponse;
+        }
 
-  return $coordinates;
+        return $coordinates;
     }
 }

@@ -75,8 +75,8 @@
         </nav>
 
         <main class="py-4 container">
-            @yield('content')
             @include('common.errors')
+            @yield('content')
         </main>
     </div>
 </body>

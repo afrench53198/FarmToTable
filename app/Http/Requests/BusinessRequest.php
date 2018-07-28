@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateBusinessRequest extends FormRequest
+class BusinessRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,20 @@ class CreateBusinessRequest extends FormRequest
         return [
             'name'=> 'required|string|max:255',
             'description'=> 'required|string',
-            'phone' => 'nullable|phone|numeric',
+            'phone' => 'nullable|phone',
             'email' => 'nullable|email',
             'street'=> 'required|string',
             'city' => 'required|string',
             'state' => 'required|string|max:2',
-            'zip' => 'required|max:5|string', 
+            'zip' => 'required|min:5|string', 
+        ];
+    }
+
+    public function messages() {
+        return [
+            'zip.min' =>'your zip code must be at least 5 characters long',
+            'email.email'=>'your email is invalid',
+            'phone.numeric'=>'your phone number must be a number',
         ];
     }
 }

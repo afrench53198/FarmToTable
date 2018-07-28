@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\CreateBusinessRequest;
-use App\Http\Requests\BusinessUpdateRequest;
+use App\Http\Requests\BusinessRequest;
 use App\Business;
 use App\Utilities\GoogleMaps;
 use Illuminate\Auth\Access\Response;
@@ -39,7 +38,7 @@ class BusinessesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateBusinessRequest $request)
+    public function store(BusinessRequest $request)
     {
         $user = auth()->user();
         
@@ -94,25 +93,21 @@ class BusinessesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BusinessUpdateRequest $request, $id)
+    public function update(BusinessRequest $request, $id)
     {
-        // Todo: Get validation working properly so the view can display error messages
-        Validator::make($request->all(), [
-            'name'=> 'required|string|max:255',
-            'description'=> 'required|string',
-            'phone' => 'required|phone|numeric',
-            'email' => 'email',
-            'street'=> 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string|max:2',
-            'zip' => 'required|max:5|string', 
-        ])->validate();
-        $business = Business::find($id);
 
-        foreach ($request->updates as $key => $updatedValue) {
-            $business[$key] = $updatedValue;
-        }
-       
+        
+        
+       $updates = $request->all();
+     
+        $business = Business::findOrFail($id);
+        $business->street = $updates['street'];
+        $business->city = $updates['city'];
+        $business->state = $updates['state'];
+        $business->zip = $updates['zip'];
+        $business->phone = $updates['phone'];
+        $business->email = $updates['email'];
+
         $coordinates = GoogleMaps::geocodeAddress($business->street,$business->city,$business->state,$business->zip);
             if ($coordinates['lat']) {
                 $business['latitude'] = $coordinates['lat'];

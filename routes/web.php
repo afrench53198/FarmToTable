@@ -33,4 +33,4 @@ Route::put('/profile/create/{user}','ProfileController@address');
 
 Route::get('/profile','ProfileController@index');
 
-Route::put('/profile/{user}','ProfileController@update');
+Route::put('/profile/{id}','ProfileController@update');

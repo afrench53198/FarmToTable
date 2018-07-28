@@ -27,7 +27,7 @@ class AddressRequest extends FormRequest
             'street'=> 'required|string',
             'city' => 'required|string',
             'state' => 'required|string|max:2',
-            'zip' => 'required|max:5|string', 
+            'zip' => 'required|min:5|string', 
         ];
     }
 }

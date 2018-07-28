@@ -13926,6 +13926,7 @@ try {
 window.axios = __webpack_require__(17);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['Accept'] = 'application/json';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -47928,16 +47929,60 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             isEditMode: false,
-            businessUpdateData: {},
-            businessData: this.business,
-            userUpdateData: {},
-            userData: this.user,
-            errors: []
+            // Use Object.assign() to prevent changes to original business object
+            businessData: Object.assign({}, this.business),
+            userData: Object.assign({}, this.user),
+            errors: {}
         };
     },
 
@@ -47948,17 +47993,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     //Todo - Institute client side validation that prevents submission of faulty data
     methods: {
-        validateData: function validateData(data) {},
-        saveEdits: function saveEdits() {
+        cancelEdits: function cancelEdits() {
+            if (this.business) {
+                this.businessData = Object.assign({}, this.business), this.isEditMode = false;
+                return;
+            }
+            this.userData = Object.assign({}, this.user), this.isEditMode = false;
+        },
+        saveBusinessEdits: function saveBusinessEdits() {
             var _this = this;
 
-            axios.put('/businesses/' + this.business.id, { updates: this.businessData }).then(function (response) {
-                console.log(response.data);
+            this.errors = {};
+            axios({
+                method: 'put',
+                url: '/businesses/' + this.business.id,
+                data: this.businessData
+            }).then(function (response) {
                 _this.businessData = response.data;
                 _this.isEditMode = false;
-            }).catch(function (err) {
-                console.log(err);
-                _this.isEditMode = false;
+            }).catch(function (error) {
+                _this.errors = error.response.data.errors;
+                _this.businessData = _this.business;
+            });
+        },
+        saveUserEdits: function saveUserEdits() {
+            var _this2 = this;
+
+            this.errors = {};
+            axios({
+                method: 'put',
+                url: '/profile/' + this.user.id,
+                data: this.userData,
+                responseType: 'json',
+                headers: {
+                    'Accepts': 'application/json'
+                }
+            }).then(function (response) {
+                _this2.userData = response.data;
+                _this2.isEditMode = false;
+            }).catch(function (error) {
+                _this2.errors = error.response.data.errors;
+                _this2.userData = _this2.user;
             });
         }
     }
@@ -47998,7 +48073,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-success",
-                    on: { click: _vm.saveEdits }
+                    on: { click: _vm.saveBusinessEdits }
                   },
                   [_vm._v("Save Edits")]
                 )
@@ -48009,11 +48084,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-danger",
-                    on: {
-                      click: function($event) {
-                        _vm.isEditMode = false
-                      }
-                    }
+                    on: { click: _vm.cancelEdits }
                   },
                   [_vm._v("Cancel")]
                 )
@@ -48063,6 +48134,14 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
+              _vm.errors.name
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.name[0]) + " ")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               !_vm.isEditMode
                 ? _c("p", [
                     _c("strong", [_vm._v("Description:")]),
@@ -48103,6 +48182,16 @@ var render = function() {
                         }
                       }
                     })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.description
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v(
+                        "Error: " + _vm._s(_vm.errors.description[0]) + " "
+                      )
+                    ])
                   ])
                 : _vm._e()
             ])
@@ -48157,6 +48246,14 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
+              _vm.errors.street
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.street[0]) + " ")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               !_vm.isEditMode
                 ? _c("p", [
                     _c("strong", [_vm._v("City: ")]),
@@ -48193,6 +48290,14 @@ var render = function() {
                         }
                       }
                     })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.city
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.city[0]) + " ")
+                    ])
                   ])
                 : _vm._e(),
               _vm._v(" "),
@@ -48449,6 +48554,14 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
+              _vm.errors.state
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.state[0]) + " ")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               !_vm.isEditMode
                 ? _c("p", [
                     _c("strong", [_vm._v("Zip: ")]),
@@ -48471,7 +48584,7 @@ var render = function() {
                       ],
                       staticClass: "form-control",
                       attrs: {
-                        type: "number",
+                        type: "text",
                         maxlength: "5",
                         name: "business-zip"
                       },
@@ -48485,6 +48598,14 @@ var render = function() {
                         }
                       }
                     })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.zip
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.zip[0]) + " ")
+                    ])
                   ])
                 : _vm._e()
             ])
@@ -48535,6 +48656,14 @@ var render = function() {
                   ])
                 : _vm._e(),
               _vm._v(" "),
+              _vm.errors.phone
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.phone[0]) + " ")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               !_vm.isEditMode
                 ? _c("p", [
                     _c("strong", [_vm._v("Email: ")]),
@@ -48572,13 +48701,58 @@ var render = function() {
                       }
                     })
                   ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.email
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.email[0]) + " ")
+                    ])
+                  ])
                 : _vm._e()
             ])
           ])
         ])
       : _c("div", { staticClass: "card" }, [
-          _c("h4", { staticClass: "card-header" }, [
-            _vm._v("Address Information")
+          _c("div", { staticClass: "d-flex card-header" }, [
+            _c("h1", [_vm._v("Your profile")]),
+            _vm._v(" "),
+            !_vm.isEditMode
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: {
+                      click: function($event) {
+                        _vm.isEditMode = true
+                      }
+                    }
+                  },
+                  [_vm._v("Edit")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.isEditMode
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success",
+                    on: { click: _vm.saveUserEdits }
+                  },
+                  [_vm._v("Save Edits")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.isEditMode
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger",
+                    on: { click: _vm.cancelEdits }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
@@ -48617,6 +48791,12 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
+            _vm.errors.street
+              ? _c("div", { staticClass: "error" }, [
+                  _c("p", [_vm._v("Error: " + _vm._s(_vm.errors.street[0]))])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             !_vm.isEditMode
               ? _c("p", [
                   _c("strong", [_vm._v("City: ")]),
@@ -48652,6 +48832,14 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
+            _vm.errors.city
+              ? _c("div", { staticClass: "alert alert-danger" }, [
+                  _c("p", [
+                    _vm._v("Error: " + _vm._s(_vm.errors.city[0]) + " ")
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             !_vm.isEditMode
               ? _c("p", [
                   _c("strong", [_vm._v("State: ")]),
@@ -48663,7 +48851,253 @@ var render = function() {
               ? _c("div", { staticClass: "form-group" }, [
                   _vm._m(11),
                   _vm._v(" "),
-                  _vm._m(12)
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.userData.state,
+                          expression: "userData.state"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { name: "state", id: "state" },
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.userData,
+                            "state",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "AL" } }, [
+                        _vm._v("Alabama")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "AK" } }, [
+                        _vm._v("Alaska")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "AZ" } }, [
+                        _vm._v("Arizona")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "AR" } }, [
+                        _vm._v("Arkansas")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "CA" } }, [
+                        _vm._v("California")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "CO" } }, [
+                        _vm._v("Colorado")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "CT" } }, [
+                        _vm._v("Connecticut")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "DE" } }, [
+                        _vm._v("Delaware")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "DC" } }, [
+                        _vm._v("District Of Columbia")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "FL" } }, [
+                        _vm._v("Florida")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "GA" } }, [
+                        _vm._v("Georgia")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "HI" } }, [
+                        _vm._v("Hawaii")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "ID" } }, [
+                        _vm._v("Idaho")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "IL" } }, [
+                        _vm._v("Illinois")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "IN" } }, [
+                        _vm._v("Indiana")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "IA" } }, [
+                        _vm._v("Iowa")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "KS" } }, [
+                        _vm._v("Kansas")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "KY" } }, [
+                        _vm._v("Kentucky")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "LA" } }, [
+                        _vm._v("Louisiana")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "ME" } }, [
+                        _vm._v("Maine")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MD" } }, [
+                        _vm._v("Maryland")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MA" } }, [
+                        _vm._v("Massachusetts")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MI" } }, [
+                        _vm._v("Michigan")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MN" } }, [
+                        _vm._v("Minnesota")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MS" } }, [
+                        _vm._v("Mississippi")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MO" } }, [
+                        _vm._v("Missouri")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "MT" } }, [
+                        _vm._v("Montana")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NE" } }, [
+                        _vm._v("Nebraska")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NV" } }, [
+                        _vm._v("Nevada")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NH" } }, [
+                        _vm._v("New Hampshire")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NJ" } }, [
+                        _vm._v("New Jersey")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NM" } }, [
+                        _vm._v("New Mexico")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NY" } }, [
+                        _vm._v("New York")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "NC" } }, [
+                        _vm._v("North Carolina")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "ND" } }, [
+                        _vm._v("North Dakota")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "OH" } }, [
+                        _vm._v("Ohio")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "OK" } }, [
+                        _vm._v("Oklahoma")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "OR" } }, [
+                        _vm._v("Oregon")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "PA" } }, [
+                        _vm._v("Pennsylvania")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "RI" } }, [
+                        _vm._v("Rhode Island")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "SC" } }, [
+                        _vm._v("South Carolina")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "SD" } }, [
+                        _vm._v("South Dakota")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "TN" } }, [
+                        _vm._v("Tennessee")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "TX" } }, [
+                        _vm._v("Texas")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "UT" } }, [
+                        _vm._v("Utah")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "VT" } }, [
+                        _vm._v("Vermont")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "VA" } }, [
+                        _vm._v("Virginia")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "WA" } }, [
+                        _vm._v("Washington")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "WV" } }, [
+                        _vm._v("West Virginia")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "WI" } }, [
+                        _vm._v("Wisconsin")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "WY" } }, [
+                        _vm._v("Wyoming")
+                      ])
+                    ]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.errors.state
+              ? _c("div", { staticClass: "alert alert-danger" }, [
+                  _c("p", [
+                    _vm._v("Error: " + _vm._s(_vm.errors.state[0]) + " ")
+                  ])
                 ])
               : _vm._e(),
             _vm._v(" "),
@@ -48676,7 +49110,7 @@ var render = function() {
             _vm._v(" "),
             _vm.isEditMode
               ? _c("div", { staticClass: "form-group" }, [
-                  _vm._m(13),
+                  _vm._m(12),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -48688,7 +49122,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "number", maxlength: "5", name: "zip" },
+                    attrs: { type: "text", maxlength: "5", name: "zip" },
                     domProps: { value: _vm.userData.zip },
                     on: {
                       input: function($event) {
@@ -48699,6 +49133,12 @@ var render = function() {
                       }
                     }
                   })
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.errors.zip
+              ? _c("div", { staticClass: "alert alert-danger" }, [
+                  _c("p", [_vm._v("Error: " + _vm._s(_vm.errors.zip[0]) + " ")])
                 ])
               : _vm._e()
           ])
@@ -48807,120 +49247,6 @@ var staticRenderFns = [
     return _c("strong", [
       _c("label", { attrs: { for: "user-state" } }, [_vm._v("State: ")])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "select",
-      { staticClass: "form-control", attrs: { name: "state", id: "state" } },
-      [
-        _c("option", { attrs: { value: "AL" } }, [_vm._v("Alabama")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "AK" } }, [_vm._v("Alaska")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "AZ" } }, [_vm._v("Arizona")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "AR" } }, [_vm._v("Arkansas")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "CA" } }, [_vm._v("California")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "CO" } }, [_vm._v("Colorado")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "CT" } }, [_vm._v("Connecticut")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "DE" } }, [_vm._v("Delaware")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "DC" } }, [
-          _vm._v("District Of Columbia")
-        ]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "FL" } }, [_vm._v("Florida")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "GA" } }, [_vm._v("Georgia")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "HI" } }, [_vm._v("Hawaii")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "ID" } }, [_vm._v("Idaho")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "IL" } }, [_vm._v("Illinois")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "IN" } }, [_vm._v("Indiana")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "IA" } }, [_vm._v("Iowa")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "KS" } }, [_vm._v("Kansas")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "KY" } }, [_vm._v("Kentucky")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "LA" } }, [_vm._v("Louisiana")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "ME" } }, [_vm._v("Maine")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MD" } }, [_vm._v("Maryland")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MA" } }, [_vm._v("Massachusetts")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MI" } }, [_vm._v("Michigan")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MN" } }, [_vm._v("Minnesota")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MS" } }, [_vm._v("Mississippi")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MO" } }, [_vm._v("Missouri")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "MT" } }, [_vm._v("Montana")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NE" } }, [_vm._v("Nebraska")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NV" } }, [_vm._v("Nevada")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NH" } }, [_vm._v("New Hampshire")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NJ" } }, [_vm._v("New Jersey")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NM" } }, [_vm._v("New Mexico")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NY" } }, [_vm._v("New York")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "NC" } }, [_vm._v("North Carolina")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "ND" } }, [_vm._v("North Dakota")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "OH" } }, [_vm._v("Ohio")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "OK" } }, [_vm._v("Oklahoma")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "OR" } }, [_vm._v("Oregon")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "PA" } }, [_vm._v("Pennsylvania")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "RI" } }, [_vm._v("Rhode Island")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "SC" } }, [_vm._v("South Carolina")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "SD" } }, [_vm._v("South Dakota")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "TN" } }, [_vm._v("Tennessee")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "TX" } }, [_vm._v("Texas")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "UT" } }, [_vm._v("Utah")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "VT" } }, [_vm._v("Vermont")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "VA" } }, [_vm._v("Virginia")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "WA" } }, [_vm._v("Washington")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "WV" } }, [_vm._v("West Virginia")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "WI" } }, [_vm._v("Wisconsin")]),
-        _vm._v(" "),
-        _c("option", { attrs: { value: "WY" } }, [_vm._v("Wyoming")])
-      ]
-    )
   },
   function() {
     var _vm = this

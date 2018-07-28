@@ -7,6 +7,8 @@ use App\Http\Requests\AddressRequest;
 use App\Role;
 use App\User;
 use App\Utilities\GoogleMaps;
+use Illuminate\Support\Facades\Validator;
+
 
 class ProfileController extends Controller
 {
@@ -49,6 +51,27 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect('/profile');
+    }
+
+    public function update(AddressRequest $request, $id) 
+    {
+        $updates = $request->all();
+
+        $user = User::findOrFail($id);
+        $user->street = $updates['street'];
+        $user->city = $updates['city'];
+        $user->state = $updates['state'];
+        $user->zip = $updates['zip'];
+
+        $coordinates = GoogleMaps::geocodeAddress($user->street,$user->city,$user->state,$user->zip);
+            if ($coordinates['lat']) {
+                $user['latitude'] = $coordinates['lat'];
+                $user['longitude'] = $coordinates['lng'];
+                $user->save();
+                return response()->json($user,200);
+            } else {                    
+                return response()->json('invalid_address',406);
+            }
     }
 
     public function create() 

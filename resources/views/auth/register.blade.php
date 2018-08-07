@@ -25,18 +25,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('I am an') }}</label>
 
                             <div class="col-md-6">
-                                <select id="role_id" type="select" class="form-control{{ $errors->has('Role') ? ' is-invalid' : '' }}" name="role_id" value="{{ old('Role') }}" required autofocus>
-                                    <option value="1">Producer</option>
-                                    <option value="2">Business</option>
-                                    <option value="3">Consumer</option>
+                                <select id="hasOrganization" type="select" class="form-control{{ $errors->has('hasOrganization') ? ' is-invalid' : '' }}" name="hasOrganization" value="{{ old('Role') }}" required autofocus>
+                                    <option value="1">Organization</option>
+                                    <option value="0">User</option>
                                 </select>
 
-                                @if ($errors->has('Role'))
+                                @if ($errors->has('hasOrganization'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('Role') }}</strong>
+                                        <strong>{{ $errors->first('hasOrganization') }}</strong>
                                     </span>
                                 @endif
                             </div>

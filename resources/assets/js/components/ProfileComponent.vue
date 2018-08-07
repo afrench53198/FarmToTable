@@ -2,7 +2,7 @@
     <div class="container">
         <!-- TODO - create html and css for error views -->
 
-        <div v-if="business != null">
+        <div v-if="user.hasOrganization">
             
             <div class="d-flex">
                 <h1>Your Business</h1>
@@ -24,6 +24,22 @@
                 <div class="alert alert-danger"  v-if='errors.name'>
                     <p >Error: {{errors.name[0]}} </p>
                 </div>
+                <p v-if='!isEditMode'><strong>Type:</strong> {{businessData.type}}</p> 
+                <div class="form-group" v-if='isEditMode'>
+                    <strong><label for="business-type">Type</label></strong> 
+                    <select class="form-control" name="business-type" v-on:change="checkIsOtherType(businessData.type)" v-model='businessData.type'>
+                        <option value="market">Farmers Market</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="farm">Farm</option>
+                        <option value="distributor">Distributor</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <input class="form-control" name="business-type" v-if="isOtherType" v-model='businessData.type'>
+                </div>
+                
+                <div class="alert alert-danger"  v-if='errors.type'>
+                    <p >Error: {{errors.type[0]}} </p>
+                </div>
                 <p v-if='!isEditMode'><strong>Description:</strong> {{businessData.description}}</p> 
                 <div class="form-group" v-if='isEditMode'>
                     <strong><label for="business-description">Description</label></strong> 
@@ -38,7 +54,7 @@
 
         </div>
 
-        <div class="card">
+        <div class="card" >
             <h4 class="card-header">Address Information</h4>
             <div class="card-body">
 
@@ -132,6 +148,14 @@
         <div class="card">
             <h4 class="card-header">Contact Information</h4>
             <div class="card-body">
+                   <p v-if="!isEditMode"><strong>Name: </strong> {{businessData.contact_name}}</p>
+                <div class="form-group" v-if='isEditMode'>
+                    <strong><label for="contact_name">Contact Name: </label></strong> 
+                    <input class="form-control" type="tel" name="contact_name"  v-model='businessData.contact_name'>
+                </div>
+                <div class="alert alert-danger" v-if='errors.phone'>
+                    <p  >Error: {{errors.contact_name[0]}} </p>
+                </div>
                 <p v-if="!isEditMode"><strong>Phone: </strong> {{businessData.phone}}</p>
                 <div class="form-group" v-if='isEditMode'>
                     <strong><label for="business-phone">Phone: </label></strong> 
@@ -280,6 +304,8 @@
                 // Use Object.assign() to prevent changes to original business object
                 businessData: Object.assign({},this.business),
                 userData: Object.assign({},this.user),
+                isOtherType: false,
+                newType: '',
                 errors: {}
             }
         },
@@ -288,8 +314,30 @@
             user: {},
             role: {}
         },
+
+        mounted: function() {
+            this.checkIsOtherType(this.businessData.type);
+        },
         //Todo - Institute client side validation that prevents submission of faulty data
         methods: {
+            checkIsOtherType(type) {
+                if (type == 'farm' || type == 'restaurant' || type == 'market' || type == 'distributor' ) {
+                    this.isOtherType = false
+                } else {
+                    this.isOtherType = true
+                }
+            },
+            setNewType() {
+                if (this.newType !== '') {
+                    this.businessData.type = this.newType
+                } else {
+                    return
+                }
+            },
+            clearTypeInfo() {
+                this.newType = '',
+                this.isOtherType = false
+            },
             cancelEdits() {
                 if(this.business) {
                     this.businessData = Object.assign({},this.business),
@@ -301,22 +349,26 @@
             },
             saveBusinessEdits () {
                 this.errors = {}
+    
                 axios({
                     method:'put',
                     url:'/businesses/' + this.business.id,
                     data: this.businessData ,
                 })
                 .then(response => {
+                    this.clearTypeInfo()
                     this.businessData = response.data;
                     this.isEditMode = false;
                 })
                 .catch (error => {
+                    this.clearTypeInfo()
                     this.errors = error.response.data.errors;
                     this.businessData = this.business
                 })
             },
             saveUserEdits () {
                 this.errors = {}
+                
                 axios({
                     method:'put',
                     url:'/profile/' + this.user.id,

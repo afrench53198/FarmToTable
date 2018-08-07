@@ -11,22 +11,25 @@
             <input type="text" class="form-control" name='name' required>
         </div>
         <div class="form-group">
+            <label for="name">Type</label>
+            <select name="type" id="type" class="form-control">
+                <option value="market">Farmers Market</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="farm">Farm</option>
+                <option value="distributor">Distributor</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" name='description' placeholder="Enter your services, what you sell, and why your business is awesome" required></textarea>
         </div>
-        <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" class="form-control" name='phone' placeholder="optional">
-        </div>
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" class="form-control" name='email' placeholder="optional">
-        </div>
+        
         <h4>Business Location</h4>
         <hr>
         <div class="form-group">
             <label for="street">Street Address</label>
-            <input type="text" class="form-control" name='street'  id="street" placeholder="1404 e. Local Food Ave" required>
+            <input type="text" class="form-control" name='street'  id="street" placeholder="APT 234 1404 E Local Food Ave" required>
         </div>
         <div class="form-group">
             <label for="city">City</label>
@@ -91,6 +94,20 @@
         <div class="form-group">
             <label for="city">Zip Code</label>
             <input type="number" class="form-control" name='zip'  id="zip" placeholder="40929" required>
+        </div>
+        <h4>Contact Information</h4>
+        <hr>
+        <div class="form-group">
+                <label for="name">Contact Name</label>
+                <input type="text" class="form-control" name='contact_name' required>
+            </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" class="form-control" name='phone' placeholder="optional">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" name='email' placeholder="optional">
         </div>
         <button type="submit" id="submit" class="btn btn-primary">Submit</button>
     </form>

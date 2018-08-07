@@ -17,25 +17,14 @@
                          </div>
                          <div class="card flex-equal-width">
                              <h3 class="card-header">
-                                 Sign up as a Producer
+                                 Sign up as an organization
                              </h3>
-      
-                             <p class="card-body">Want to gain immediate access to customers in your area? 
+                             <p class="card-body">Want to gain immediate access to local food players in your area? 
                              There are countless restaurants, grocery stores, and people that 
                              want to reward you for the fruits of your labor.
                              </p>
                              <a class="btn btn-primary" href="{{ route('register') }}" >Get Started</a>
                          </div>
-                         <div class="card flex-equal-width">
-                                <h3 class="card-header">
-                                    Sign up as a Business
-                                </h3>
-                                <p class="card-body">Are you an organization that wants more exposure and access to local food from responsible, sustainable farms? 
-                                    Browse all the wonderful ingredients the farmers have to offer! 
-                                </p>
-                                <a class="btn btn-primary" href="{{ route('register') }}" >Get Started</a>
-                            </div>
-                     </div>
                  </div>
                 
             @endsection

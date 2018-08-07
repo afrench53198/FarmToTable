@@ -47974,6 +47974,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -47982,6 +48006,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Use Object.assign() to prevent changes to original business object
             businessData: Object.assign({}, this.business),
             userData: Object.assign({}, this.user),
+            isOtherType: false,
+            newType: '',
             errors: {}
         };
     },
@@ -47991,8 +48017,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         user: {},
         role: {}
     },
+
+    mounted: function mounted() {
+        this.checkIsOtherType(this.businessData.type);
+    },
     //Todo - Institute client side validation that prevents submission of faulty data
     methods: {
+        checkIsOtherType: function checkIsOtherType(type) {
+            if (type == 'farm' || type == 'restaurant' || type == 'market' || type == 'distributor') {
+                this.isOtherType = false;
+            } else {
+                this.isOtherType = true;
+            }
+        },
+        setNewType: function setNewType() {
+            if (this.newType !== '') {
+                this.businessData.type = this.newType;
+            } else {
+                return;
+            }
+        },
+        clearTypeInfo: function clearTypeInfo() {
+            this.newType = '', this.isOtherType = false;
+        },
         cancelEdits: function cancelEdits() {
             if (this.business) {
                 this.businessData = Object.assign({}, this.business), this.isEditMode = false;
@@ -48004,14 +48051,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             this.errors = {};
+
             axios({
                 method: 'put',
                 url: '/businesses/' + this.business.id,
                 data: this.businessData
             }).then(function (response) {
+                _this.clearTypeInfo();
                 _this.businessData = response.data;
                 _this.isEditMode = false;
             }).catch(function (error) {
+                _this.clearTypeInfo();
                 _this.errors = error.response.data.errors;
                 _this.businessData = _this.business;
             });
@@ -48020,6 +48070,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.errors = {};
+
             axios({
                 method: 'put',
                 url: '/profile/' + this.user.id,
@@ -48048,7 +48099,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm.business != null
+    _vm.user.hasOrganization
       ? _c("div", [
           _c("div", { staticClass: "d-flex" }, [
             _c("h1", [_vm._v("Your Business")]),
@@ -48144,6 +48195,116 @@ var render = function() {
               _vm._v(" "),
               !_vm.isEditMode
                 ? _c("p", [
+                    _c("strong", [_vm._v("Type:")]),
+                    _vm._v(" " + _vm._s(_vm.businessData.type))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isEditMode
+                ? _c("div", { staticClass: "form-group" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.businessData.type,
+                            expression: "businessData.type"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { name: "business-type" },
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.businessData,
+                                "type",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                            function($event) {
+                              _vm.checkIsOtherType(_vm.businessData.type)
+                            }
+                          ]
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "market" } }, [
+                          _vm._v("Farmers Market")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "restaurant" } }, [
+                          _vm._v("Restaurant")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "farm" } }, [
+                          _vm._v("Farm")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "distributor" } }, [
+                          _vm._v("Distributor")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "other" } }, [
+                          _vm._v("Other")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.isOtherType
+                      ? _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.businessData.type,
+                              expression: "businessData.type"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "business-type" },
+                          domProps: { value: _vm.businessData.type },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.businessData,
+                                "type",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      : _vm._e()
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.type
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v("Error: " + _vm._s(_vm.errors.type[0]) + " ")
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.isEditMode
+                ? _c("p", [
                     _c("strong", [_vm._v("Description:")]),
                     _vm._v(" " + _vm._s(_vm.businessData.description))
                   ])
@@ -48151,7 +48312,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(2),
+                    _vm._m(3),
                     _vm._v(" "),
                     _c("textarea", {
                       directives: [
@@ -48212,7 +48373,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(3),
+                    _vm._m(4),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -48263,7 +48424,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(4),
+                    _vm._m(5),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -48310,7 +48471,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(5),
+                    _vm._m(6),
                     _vm._v(" "),
                     _c(
                       "select",
@@ -48571,7 +48732,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(6),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -48619,6 +48780,55 @@ var render = function() {
             _c("div", { staticClass: "card-body" }, [
               !_vm.isEditMode
                 ? _c("p", [
+                    _c("strong", [_vm._v("Name: ")]),
+                    _vm._v(" " + _vm._s(_vm.businessData.contact_name))
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isEditMode
+                ? _c("div", { staticClass: "form-group" }, [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.businessData.contact_name,
+                          expression: "businessData.contact_name"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "tel", name: "contact_name" },
+                      domProps: { value: _vm.businessData.contact_name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.businessData,
+                            "contact_name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.phone
+                ? _c("div", { staticClass: "alert alert-danger" }, [
+                    _c("p", [
+                      _vm._v(
+                        "Error: " + _vm._s(_vm.errors.contact_name[0]) + " "
+                      )
+                    ])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              !_vm.isEditMode
+                ? _c("p", [
                     _c("strong", [_vm._v("Phone: ")]),
                     _vm._v(" " + _vm._s(_vm.businessData.phone))
                   ])
@@ -48626,7 +48836,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(7),
+                    _vm._m(9),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -48673,7 +48883,7 @@ var render = function() {
               _vm._v(" "),
               _vm.isEditMode
                 ? _c("div", { staticClass: "form-group" }, [
-                    _vm._m(8),
+                    _vm._m(10),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -48765,7 +48975,7 @@ var render = function() {
             _vm._v(" "),
             _vm.isEditMode
               ? _c("div", { staticClass: "form-group" }, [
-                  _vm._m(9),
+                  _vm._m(11),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -48806,7 +49016,7 @@ var render = function() {
             _vm._v(" "),
             _vm.isEditMode
               ? _c("div", { staticClass: "form-group" }, [
-                  _vm._m(10),
+                  _vm._m(12),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -48849,7 +49059,7 @@ var render = function() {
             _vm._v(" "),
             _vm.isEditMode
               ? _c("div", { staticClass: "form-group" }, [
-                  _vm._m(11),
+                  _vm._m(13),
                   _vm._v(" "),
                   _c(
                     "select",
@@ -49110,7 +49320,7 @@ var render = function() {
             _vm._v(" "),
             _vm.isEditMode
               ? _c("div", { staticClass: "form-group" }, [
-                  _vm._m(12),
+                  _vm._m(14),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -49167,6 +49377,14 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("strong", [
+      _c("label", { attrs: { for: "business-type" } }, [_vm._v("Type")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [
       _c("label", { attrs: { for: "business-description" } }, [
         _vm._v("Description")
       ])
@@ -49204,6 +49422,16 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("strong", [
       _c("label", { attrs: { for: "business-zip" } }, [_vm._v("Zip: ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [
+      _c("label", { attrs: { for: "contact_name" } }, [
+        _vm._v("Contact Name: ")
+      ])
     ])
   },
   function() {

@@ -48,7 +48,9 @@ class BusinessesController extends Controller
         $business = Business::create([
             'user_id'=>$user->id,
             'name'=>$request->name,
+            'type'=>$request->type,
             'description'=>$request->description,
+            'contact_name'=>$request->contact_name,
             'phone'=>$request->phone,
             'email'=>$request->email,
             'street'=>$request->street,
@@ -98,9 +100,12 @@ class BusinessesController extends Controller
 
         
         
-       $updates = $request->all();
+        $updates = $request->all();
      
         $business = Business::findOrFail($id);
+        $business->name = $updates['name'];
+        $business->description = $updates['description'];
+        $business->type = $updates['type'];
         $business->street = $updates['street'];
         $business->city = $updates['city'];
         $business->state = $updates['state'];

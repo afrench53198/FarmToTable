@@ -24,14 +24,16 @@ class BusinessRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> 'required|string|max:255',
-            'description'=> 'required|string',
+            'name'=> 'nullable|string|max:255',
+            'type'=>'nullable|string',
+            'description'=> 'nullable|string',
+            'contact_name'=>'nullable|string|max:255',
             'phone' => 'nullable|phone',
             'email' => 'nullable|email',
-            'street'=> 'required|string',
-            'city' => 'required|string',
-            'state' => 'required|string|max:2',
-            'zip' => 'required|min:5|string', 
+            'street'=> 'nullable|string',
+            'city' => 'nullable|string',
+            'state' => 'nullable|string|max:2',
+            'zip' => 'nullable|min:5|string', 
         ];
     }
 

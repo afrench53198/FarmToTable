@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\AddressRequest;
-use App\Role;
 use App\User;
 use App\Utilities\GoogleMaps;
 use Illuminate\Support\Facades\Validator;
@@ -77,8 +76,7 @@ class ProfileController extends Controller
     public function create() 
     {
         $user = auth()->user();
-        $role = Role::find($user->role_id);
         
-        return view('profile.create',compact('role','user'));
+        return view('profile.create',compact('user'));
     }
 }

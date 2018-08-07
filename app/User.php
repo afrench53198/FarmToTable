@@ -28,20 +28,9 @@ class User extends Authenticatable
         'password', 'remember_token'
     ];
 
-    public function role() {
-        return $this->hasOne(Role::class);
-    }
 
     public function business() {
         return $this->hasOne(Business::class);
     }
     
-   
-    /**
-     * checks if user has the role specified
-     * @param $roles array
-     */
-    public function hasRole($role) {
-        return $this->role->name === $role;
-    }
 }

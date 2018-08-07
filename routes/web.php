@@ -34,3 +34,5 @@ Route::put('/profile/create/{user}','ProfileController@address');
 Route::get('/profile','ProfileController@index');
 
 Route::put('/profile/{id}','ProfileController@update');
+
+Route::get('forum', 'ForumController@index');

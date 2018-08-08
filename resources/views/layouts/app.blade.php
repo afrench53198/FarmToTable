@@ -48,9 +48,7 @@
                                 <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                             </li>
                         @else
-                            <li class="nav-item">
-                                <a  class="nav-link" href="/profile">My Profile</a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a  class="nav-link" href="/forum">Forum</a>
                             </li>
@@ -65,7 +63,9 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
+                                    
+                                    <a  class="dropdown-item" href="/profile">My Profile</a>
+                                   
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>

@@ -17,7 +17,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     $formatter = new \Geocoder\Formatter\StringFormatter();
-    $address = $faker->usaAddress('San Diego');
+    $address = $faker->usaAddress('Phoenix');
     $streetAddress = $formatter->format($address,'%n %S');
     // If test customer is producer or business owner assign them a business
     $randomBool = (bool)random_int(0,1);
@@ -39,7 +39,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 $factory->define(App\Business::class, function (Faker $faker) {
 
     $formatter = new \Geocoder\Formatter\StringFormatter();
-    $address = $faker->usaAddress('San Diego');
+    $address = $faker->usaAddress('Phoenix, AZ');
     $types = ['Farmers Market', 'Restaurant', 'Delivery Service','Farmer'];
     $streetAddress = $formatter->format($address,'%n %S');
     return [
